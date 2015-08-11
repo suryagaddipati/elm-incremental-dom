@@ -62,13 +62,15 @@
 	    return elm.Native[name].values = values;
 	  };
 	}
-	function renderDom(data) {
-	  elementOpen('div', '', null);
-	  _text(data.x);
-	  elementClose('div');
-	}
 	function makeNode(name, propertyList, contents) {
-	  return name;
+	  var List = Elm.Native.List.make(Elm);
+	  return function () {
+	    elementOpen(name, '', null);
+	    List.toArray(contents).forEach(function (x) {
+	      return x();
+	    });
+	    elementClose(name);
+	  };
 	}
 
 	function incrementalDOM(Elm) {
@@ -99,6 +101,15 @@
 	        newFunc();
 	      });
 	      return node;
+	    },
+	    attribute: function attribute(key, value) {
+	      return F2({
+	        key: "keySomething",
+	        value: {
+	          attrKey: key,
+	          attrValue: value
+	        }
+	      });
 	    }
 	  };
 	}

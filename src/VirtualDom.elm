@@ -5,10 +5,16 @@ import Json.Decode as Json
 
 type Node = Node
 
+type Property = Property
+
 text : String -> Node
 text =
   Native.VirtualDom.text
 
-node : String -> List String -> List Node -> Node
+node : String -> List Property -> List Node -> Node
 node =
   Native.VirtualDom.node
+
+attribute : String -> String -> Property
+attribute =
+      Native.VirtualDom.attribute
