@@ -15,25 +15,18 @@ function ElmNativeModule(Elm,name, values) {
     return elm.Native[name].values = values;
   };
 }
-export default function init(Elm){
-  ElmNativeModule(Elm,'VirtualDom', {
-    text: function (x) {
-      var Element = Elm.Native.Graphics.Element.make(Elm);
-      console.log(x)
+function renderDom(data) {
+  elementOpen('div', '', null);
+  text(data.x);
+  elementClose('div');
+}
+
+function incrementalDOM(Elm){
+  return {
+    text(x) {
       return {x};
     },
-    render: function(data){
-
-
-      const renderDom = function(data) {
-        elementVoid('input', '', [ 'type', 'text' ]);
-        elementOpen('div', '', null);
-        text(data.x);
-        elementClose('div');
-      }
-
-
-
+    render(data){
       var Element = Elm.Native.Graphics.Element.make(Elm);
       var element = Element.createNode('div');
       patch(element, ()=> {
@@ -41,22 +34,18 @@ export default function init(Elm){
       });
       return element;
     },
-    update: function(node, oldModel, newModel)
+    updateAndReplace(node, oldModel, newModel)
     {
-      return node;
-    },
-    updateAndReplace: function(node, oldModel, newModel)
-    {
-      const renderDom = function(data) {
-        elementVoid('input', '', [ 'type', 'text' ]);
-        elementOpen('div', '', null);
-        text(data.x);
-        elementClose('div');
-      }
       patch(node, ()=> {
         renderDom(newModel);
       });
       return node;
     }
-  })
+  }
+}
+
+
+
+export default function init(Elm){
+  ElmNativeModule(Elm,'VirtualDom', incrementalDOM(Elm))
 }
