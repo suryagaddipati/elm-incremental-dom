@@ -17,8 +17,13 @@ function ElmNativeModule(Elm,name, values) {
 }
 function makeNode(name,propertyList,contents){
   var List = Elm.Native.List.make(Elm);
+  var properties = [];
+  List.toArray(propertyList).forEach(x => {
+    properties.push(x.key)
+    properties.push(x.value)
+  })
   return () =>{
-    elementOpen(name, '', null);
+    elementOpen(name, '', properties);
     List.toArray(contents).forEach( x => x())
     elementClose(name);
   };
@@ -34,9 +39,7 @@ function incrementalDOM(Elm){
 
     text: function(x) {
       return function(){
-        elementOpen('div', '', null);
         text(x);
-        elementClose('div');
       }
     },
     render: function(func){
@@ -54,15 +57,9 @@ function incrementalDOM(Elm){
       });
       return node;
     },
-    attribute: function(key,value){
-      return F2( {
-        key: "keySomething",
-        value: {
-          attrKey: key,
-          attrValue: value
-        }
-      });
-    }
+    attribute: F2(function(key,value){
+      return {key,value};
+    })
   }
 }
 

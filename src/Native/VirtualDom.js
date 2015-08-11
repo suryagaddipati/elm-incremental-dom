@@ -64,8 +64,13 @@
 	}
 	function makeNode(name, propertyList, contents) {
 	  var List = Elm.Native.List.make(Elm);
+	  var properties = [];
+	  List.toArray(propertyList).forEach(function (x) {
+	    properties.push(x.key);
+	    properties.push(x.value);
+	  });
 	  return function () {
-	    elementOpen(name, '', null);
+	    elementOpen(name, '', properties);
 	    List.toArray(contents).forEach(function (x) {
 	      return x();
 	    });
@@ -83,9 +88,7 @@
 
 	    text: function text(x) {
 	      return function () {
-	        elementOpen('div', '', null);
 	        _text(x);
-	        elementClose('div');
 	      };
 	    },
 	    render: function render(func) {
@@ -102,15 +105,9 @@
 	      });
 	      return node;
 	    },
-	    attribute: function attribute(key, value) {
-	      return F2({
-	        key: "keySomething",
-	        value: {
-	          attrKey: key,
-	          attrValue: value
-	        }
-	      });
-	    }
+	    attribute: F2(function (key, value) {
+	      return { key: key, value: value };
+	    })
 	  };
 	}
 
