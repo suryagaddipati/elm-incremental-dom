@@ -67,6 +67,7 @@
 	  elementClose('div');
 	}
 	function makeNode(name,propertyList,contents){
+	  debugger
 	  return name;
 	}
 

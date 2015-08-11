@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "/assets/";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -44,13 +44,23 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	__webpack_require__(3);
+	(function webpackMissingModule() { throw new Error("Cannot find module \"src/Native/VirtualDom.js\""); }());
+
+
+/***/ },
+/* 1 */,
+/* 2 */,
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
 	
-	var IncrementalDOM = __webpack_require__(1),
+	var IncrementalDOM = __webpack_require__(4),
 	  elementOpen = IncrementalDOM.elementOpen,
 	  elementClose = IncrementalDOM.elementClose,
 	  elementVoid = IncrementalDOM.elementVoid,
 	  text = IncrementalDOM.text;
-	var patch = __webpack_require__(1).patch;
+	var patch = __webpack_require__(4).patch;
 
 	function ElmNativeModule(Elm,name, values) {
 	  Elm.Native[name] = {};
@@ -67,12 +77,13 @@
 	  elementClose('div');
 	}
 	function makeNode(name,propertyList,contents){
+	  debugger
 	  return name;
 	}
 
 	function incrementalDOM(Elm){
 	  return {
-	    node: function(name, x, y){
+	   node: function(name, x, y){
 	      return F2(function(propertyList, contents) {
 	        return makeNode(name, propertyList, contents);
 	      });
@@ -82,7 +93,6 @@
 	      return {x: x};
 	    },
 	    render: function(data){
-	      debugger
 	      var Element = Elm.Native.Graphics.Element.make(Elm);
 	      var element = Element.createNode('div');
 	      patch(element, function(){
@@ -102,11 +112,11 @@
 
 
 
-	ElmNativeModule(Elm,'VirtualDom', incrementalDOM(Elm))
+	  ElmNativeModule(Elm,'VirtualDom', incrementalDOM(Elm))
 
 
 /***/ },
-/* 1 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -126,8 +136,8 @@
 	 * limitations under the License.
 	 */
 
-	var patch = __webpack_require__(2).patch;
-	var elements = __webpack_require__(7);
+	var patch = __webpack_require__(5).patch;
+	var elements = __webpack_require__(10);
 
 	module.exports = {
 	  patch: patch,
@@ -143,7 +153,7 @@
 
 
 /***/ },
-/* 2 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -162,11 +172,11 @@
 	 * limitations under the License.
 	 */
 
-	var traversal = __webpack_require__(3),
+	var traversal = __webpack_require__(6),
 	    firstChild = traversal.firstChild,
 	    parentNode = traversal.parentNode;
-	var TreeWalker = __webpack_require__(6);
-	var walker = __webpack_require__(4),
+	var TreeWalker = __webpack_require__(9);
+	var walker = __webpack_require__(7),
 	    getWalker = walker.getWalker,
 	    setWalker = walker.setWalker;
 
@@ -198,7 +208,7 @@
 
 
 /***/ },
-/* 3 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -217,8 +227,8 @@
 	 * limitations under the License.
 	 */
 
-	var getWalker = __webpack_require__(4).getWalker;
-	var getData = __webpack_require__(5).getData;
+	var getWalker = __webpack_require__(7).getWalker;
+	var getData = __webpack_require__(8).getData;
 
 
 	/**
@@ -305,7 +315,7 @@
 
 
 /***/ },
-/* 4 */
+/* 7 */
 /***/ function(module, exports) {
 
 	/**
@@ -356,7 +366,7 @@
 
 
 /***/ },
-/* 5 */
+/* 8 */
 /***/ function(module, exports) {
 
 	/**
@@ -483,7 +493,7 @@
 
 
 /***/ },
-/* 6 */
+/* 9 */
 /***/ function(module, exports) {
 
 	/**
@@ -565,7 +575,7 @@
 
 
 /***/ },
-/* 7 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -584,11 +594,11 @@
 	 * limitations under the License.
 	 */
 
-	var alignWithDOM = __webpack_require__(9).alignWithDOM;
-	var updateAttribute = __webpack_require__(11).updateAttribute;
-	var getData = __webpack_require__(5).getData;
-	var getWalker = __webpack_require__(4).getWalker;
-	var traversal = __webpack_require__(3),
+	var alignWithDOM = __webpack_require__(12).alignWithDOM;
+	var updateAttribute = __webpack_require__(14).updateAttribute;
+	var getData = __webpack_require__(8).getData;
+	var getWalker = __webpack_require__(7).getWalker;
+	var traversal = __webpack_require__(6),
 	    firstChild = traversal.firstChild,
 	    nextSibling = traversal.nextSibling,
 	    parentNode = traversal.parentNode;
@@ -896,10 +906,10 @@
 	};
 
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
 
 /***/ },
-/* 8 */
+/* 11 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -995,7 +1005,7 @@
 
 
 /***/ },
-/* 9 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1014,14 +1024,14 @@
 	 * limitations under the License.
 	 */
 
-	var nodes = __webpack_require__(10),
+	var nodes = __webpack_require__(13),
 	    createNode = nodes.createNode,
 	    getKey = nodes.getKey,
 	    getNodeName = nodes.getNodeName,
 	    getChild = nodes.getChild,
 	    registerChild = nodes.registerChild;
-	var markVisited = __webpack_require__(3).markVisited;
-	var getWalker = __webpack_require__(4).getWalker;
+	var markVisited = __webpack_require__(6).markVisited;
+	var getWalker = __webpack_require__(7).getWalker;
 
 
 	/**
@@ -1089,7 +1099,7 @@
 
 
 /***/ },
-/* 10 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1108,8 +1118,8 @@
 	 * limitations under the License.
 	 */
 
-	var updateAttribute = __webpack_require__(11).updateAttribute;
-	var nodeData = __webpack_require__(5),
+	var updateAttribute = __webpack_require__(14).updateAttribute;
+	var nodeData = __webpack_require__(8),
 	    getData = nodeData.getData,
 	    initData = nodeData.initData;
 
@@ -1270,7 +1280,7 @@
 
 
 /***/ },
-/* 11 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1289,7 +1299,7 @@
 	 * limitations under the License.
 	 */
 
-	var getData = __webpack_require__(5).getData;
+	var getData = __webpack_require__(8).getData;
 
 
 	/**

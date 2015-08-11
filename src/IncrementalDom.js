@@ -20,23 +20,33 @@ function renderDom(data) {
   text(data.x);
   elementClose('div');
 }
+function makeNode(name,propertyList,contents){
+  return name;
+}
 
 function incrementalDOM(Elm){
   return {
-    text(x) {
-      return {x};
+    node: function(name, x, y){
+      return F2(function(propertyList, contents) {
+        return makeNode(name, propertyList, contents);
+      });
     },
-    render(data){
+
+    text: function(x) {
+      return {x: x};
+    },
+    render: function(data){
+      debugger
       var Element = Elm.Native.Graphics.Element.make(Elm);
       var element = Element.createNode('div');
-      patch(element, ()=> {
+      patch(element, function(){
         renderDom(data);
       });
       return element;
     },
-    updateAndReplace(node, oldModel, newModel)
+    updateAndReplace: function(node, oldModel, newModel)
     {
-      patch(node, ()=> {
+      patch(node, function(){
         renderDom(newModel);
       });
       return node;
@@ -46,6 +56,4 @@ function incrementalDOM(Elm){
 
 
 
-export default function init(Elm){
-  ElmNativeModule(Elm,'VirtualDom', incrementalDOM(Elm))
-}
+ElmNativeModule(Elm,'VirtualDom', incrementalDOM(Elm))
