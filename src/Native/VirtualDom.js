@@ -79,21 +79,24 @@
 	    },
 
 	    text: function(x) {
-	      return {x: x};
+	      return function(){
+	        elementOpen('div', '', null);
+	        text(x);
+	        elementClose('div');
+	      }
 	    },
-	    render: function(data){
-	      debugger
+	    render: function(func){
 	      var Element = Elm.Native.Graphics.Element.make(Elm);
 	      var element = Element.createNode('div');
 	      patch(element, function(){
-	        renderDom(data);
+	        func();
 	      });
 	      return element;
 	    },
-	    updateAndReplace: function(node, oldModel, newModel)
+	    updateAndReplace: function(node, oldModel, newFunc)
 	    {
 	      patch(node, function(){
-	        renderDom(newModel);
+	        newFunc();
 	      });
 	      return node;
 	    }
