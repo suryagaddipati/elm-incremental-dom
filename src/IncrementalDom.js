@@ -42,7 +42,7 @@ function incrementalDOM(Elm){
     render: function(func){
       var Element = Elm.Native.Graphics.Element.make(Elm);
       var element = Element.createNode('div');
-      patch(element, function(){
+      patch(element, ()=>{
         func();
       });
       return element;

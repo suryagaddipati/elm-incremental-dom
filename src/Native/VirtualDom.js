@@ -44,17 +44,18 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	
+	'use strict';
+
 	var IncrementalDOM = __webpack_require__(1),
-	  elementOpen = IncrementalDOM.elementOpen,
-	  elementClose = IncrementalDOM.elementClose,
-	  elementVoid = IncrementalDOM.elementVoid,
-	  text = IncrementalDOM.text;
+	    elementOpen = IncrementalDOM.elementOpen,
+	    elementClose = IncrementalDOM.elementClose,
+	    elementVoid = IncrementalDOM.elementVoid,
+	    _text = IncrementalDOM.text;
 	var patch = __webpack_require__(1).patch;
 
-	function ElmNativeModule(Elm,name, values) {
+	function ElmNativeModule(Elm, name, values) {
 	  Elm.Native[name] = {};
-	  Elm.Native[name].make = function(elm) {
+	  Elm.Native[name].make = function (elm) {
 	    elm.Native = elm.Native || {};
 	    elm.Native[name] = elm.Native[name] || {};
 	    if (elm.Native[name].values) return elm.Native[name].values;
@@ -63,50 +64,46 @@
 	}
 	function renderDom(data) {
 	  elementOpen('div', '', null);
-	  text(data.x);
+	  _text(data.x);
 	  elementClose('div');
 	}
-	function makeNode(name,propertyList,contents){
+	function makeNode(name, propertyList, contents) {
 	  return name;
 	}
 
-	function incrementalDOM(Elm){
+	function incrementalDOM(Elm) {
 	  return {
-	    node: function(name, x, y){
-	      return F2(function(propertyList, contents) {
+	    node: function node(name, x, y) {
+	      return F2(function (propertyList, contents) {
 	        return makeNode(name, propertyList, contents);
 	      });
 	    },
 
-	    text: function(x) {
-	      return function(){
+	    text: function text(x) {
+	      return function () {
 	        elementOpen('div', '', null);
-	        text(x);
+	        _text(x);
 	        elementClose('div');
-	      }
+	      };
 	    },
-	    render: function(func){
+	    render: function render(func) {
 	      var Element = Elm.Native.Graphics.Element.make(Elm);
 	      var element = Element.createNode('div');
-	      patch(element, function(){
+	      patch(element, function () {
 	        func();
 	      });
 	      return element;
 	    },
-	    updateAndReplace: function(node, oldModel, newFunc)
-	    {
-	      patch(node, function(){
+	    updateAndReplace: function updateAndReplace(node, oldModel, newFunc) {
+	      patch(node, function () {
 	        newFunc();
 	      });
 	      return node;
 	    }
-	  }
+	  };
 	}
 
-
-
-	ElmNativeModule(Elm,'VirtualDom', incrementalDOM(Elm))
-
+	ElmNativeModule(Elm, 'VirtualDom', incrementalDOM(Elm));
 
 /***/ },
 /* 1 */
