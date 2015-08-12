@@ -24,7 +24,7 @@ function makeNode(name,propertyList,contents){
     properties.push(x.value)
   })
   return () =>{
-    elementOpen(name, '', properties);
+    elementOpen(name,null,null, ...properties);
     List.toArray(contents).forEach( x => {
       if(x.type === "Thunk"){
         x.render();
@@ -69,18 +69,6 @@ function on(name, options, decoder, createMessage)
   return property('on' + name, eventHandler);
 }
 
-var ATTRIBUTE_KEY = 'UniqueNameThatOthersAreVeryUnlikelyToUse';
-function attribute(key, value)
-{
-  return {
-    key: ATTRIBUTE_KEY,
-    value: {
-      attrKey: key,
-      attrValue: value
-    }
-  };
-}
-
 function incrementalDOM(Elm){
   return {
     node: function(name, x, y){
@@ -109,7 +97,7 @@ function incrementalDOM(Elm){
       });
       return node;
     },
-    attribute: F2(attribute),
+    // attribute: F2(attribute),
     property: F2(property),
     lazy: F2(Lazy.lazyRef),
     lazy2: F3(Lazy.lazyRef2),

@@ -136,13 +136,13 @@ view : Address Action -> Model -> Html
 view address model =
     div
       [ class "todomvc-wrapper"
-      -- , style [ ("visibility", "hidden") ]
+      , style [ ("visibility", "hidden") ]
       ]
       [ section
           [ id "todoapp" ]
           [ taskEntry address model.field
           , taskList address model.visibility model.tasks
-          , controls address model.visibility model.tasks
+          ,  controls address model.visibility model.tasks
           ]
       , infoFooter
       ]

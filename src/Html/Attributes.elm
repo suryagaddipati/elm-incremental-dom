@@ -19,7 +19,7 @@ module Html.Attributes
     , itemprop, lang, spellcheck, tabindex
     , challenge, keytype
     , cite, datetime, pubdate, manifest
-    , property, attribute
+    , property
     )
     where
 {-| Helper functions for HTML attributes. They are organized roughly by
@@ -227,7 +227,7 @@ be in HTML, not `className` as it would appear in JS.
 -}
 attribute : String -> String -> Attribute
 attribute =
-  VirtualDom.attribute
+  stringProperty
 
 
 -- GLOBAL ATTRIBUTES
@@ -235,7 +235,7 @@ attribute =
 {-| Often used with CSS to style elements with common properties. -}
 class : String -> Attribute
 class name =
-  stringProperty "className" name
+  stringProperty "class" name
 
 
 {-| Indicates the relevance of an element. -}
@@ -717,7 +717,7 @@ for an `output`.
 -}
 for : String -> Attribute
 for value =
-  stringProperty "htmlFor" value
+  stringProperty "for" value
 
 
 {-| Indicates the element ID of the `form` that owns this particular `button`,
