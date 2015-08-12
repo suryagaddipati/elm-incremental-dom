@@ -1,6 +1,7 @@
 module Main where
 import Html exposing (..)
 import Html.Lazy exposing (lazy, lazy2, lazy3)
+import Html.Events exposing (..)
 import Html.Attributes exposing (..)
 import Time
 import Signal exposing (Signal, Address)

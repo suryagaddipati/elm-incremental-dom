@@ -1,10 +1,10 @@
-import Elm from './Main.elm'
+import Elm from './Todo.elm'
 window.Elm = Elm
 window.onload = function (){
   var storedState = localStorage.getItem('elm-todo-state');
   var startingState = storedState ? JSON.parse(storedState) : null;
 
-  var todomvc = Elm.fullscreen(Elm.Main, { getStorage: startingState });
+  var todomvc = Elm.fullscreen(Elm.Todo, { getStorage: startingState });
   todomvc.ports.focus.subscribe(function(selector) {
     setTimeout(function() {
       var nodes = document.querySelectorAll(selector);
