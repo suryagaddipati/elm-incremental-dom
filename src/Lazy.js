@@ -79,6 +79,7 @@ function updateThunk(previous, domNode)
 
 function renderThunk()
 {
+  debugger
   return this.thunk();
 }
 export default {

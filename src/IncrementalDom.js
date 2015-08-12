@@ -25,9 +25,48 @@ function makeNode(name,propertyList,contents){
   })
   return () =>{
     elementOpen(name, '', properties);
-    List.toArray(contents).forEach( x => x())
+    List.toArray(contents).forEach( x => {
+      if(x.type === "Thunk"){
+        x.render();
+      }else{
+        x()
+      }
+    })
     elementClose(name);
   };
+}
+
+function property(key, value)
+{
+  return {
+    key: key,
+    value: value
+  };
+}
+
+function on(name, options, decoder, createMessage)
+{
+  var Json = Elm.Native.Json.make(Elm);
+  var List = Elm.Native.List.make(Elm);
+  var Signal = Elm.Native.Signal.make(Elm);
+  var Utils = Elm.Native.Utils.make(Elm);
+  function eventHandler(event)
+  {
+    var value = A2(Json.runDecoderValue, decoder, event);
+    if (value.ctor === 'Ok')
+      {
+        if (options.stopPropagation)
+          {
+            event.stopPropagation();
+          }
+          if (options.preventDefault)
+            {
+              event.preventDefault();
+            }
+            Signal.sendMessage(createMessage(value._0));
+      }
+  }
+  return property('on' + name, eventHandler);
 }
 
 function incrementalDOM(Elm){
@@ -64,6 +103,7 @@ function incrementalDOM(Elm){
     lazy: F2(Lazy.lazyRef),
     lazy2: F3(Lazy.lazyRef2),
     lazy3: F4(Lazy.lazyRef3),
+    on: F4(on)
 
   }
 }

@@ -78,10 +78,41 @@
 	  return function () {
 	    elementOpen(name, '', properties);
 	    List.toArray(contents).forEach(function (x) {
-	      return x();
+	      if (x.type === "Thunk") {
+	        x.render();
+	      } else {
+	        x();
+	      }
 	    });
 	    elementClose(name);
 	  };
+	}
+
+	function property(key, value) {
+	  return {
+	    key: key,
+	    value: value
+	  };
+	}
+
+	function on(name, options, decoder, createMessage) {
+	  var Json = Elm.Native.Json.make(Elm);
+	  var List = Elm.Native.List.make(Elm);
+	  var Signal = Elm.Native.Signal.make(Elm);
+	  var Utils = Elm.Native.Utils.make(Elm);
+	  function eventHandler(event) {
+	    var value = A2(Json.runDecoderValue, decoder, event);
+	    if (value.ctor === 'Ok') {
+	      if (options.stopPropagation) {
+	        event.stopPropagation();
+	      }
+	      if (options.preventDefault) {
+	        event.preventDefault();
+	      }
+	      Signal.sendMessage(createMessage(value._0));
+	    }
+	  }
+	  return property('on' + name, eventHandler);
 	}
 
 	function incrementalDOM(Elm) {
@@ -116,7 +147,8 @@
 	    }),
 	    lazy: F2(_LazyJs2['default'].lazyRef),
 	    lazy2: F3(_LazyJs2['default'].lazyRef2),
-	    lazy3: F4(_LazyJs2['default'].lazyRef3)
+	    lazy3: F4(_LazyJs2['default'].lazyRef3),
+	    on: F4(on)
 
 	  };
 	}
@@ -1473,6 +1505,7 @@
 	}
 
 	function renderThunk() {
+	  debugger;
 	  return this.thunk();
 	}
 	exports["default"] = {
