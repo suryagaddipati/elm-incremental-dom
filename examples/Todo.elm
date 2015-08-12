@@ -251,11 +251,9 @@ controls address visibility tasks =
     let tasksCompleted = List.length (List.filter .completed tasks)
         tasksLeft = List.length tasks - tasksCompleted
         item_ = if tasksLeft == 1 then " item" else " items"
+        footerAttributes = if List.isEmpty tasks then [id "footer",hidden True] else [id "footer"]
     in
-    footer
-      [ id "footer"
-      , hidden (List.isEmpty tasks)
-      ]
+    footer footerAttributes
       [ span
           [ id "todo-count" ]
           [ strong [] [ text (toString tasksLeft) ]
