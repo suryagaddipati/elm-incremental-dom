@@ -115,6 +115,17 @@
 	  return property('on' + name, eventHandler);
 	}
 
+	var ATTRIBUTE_KEY = 'UniqueNameThatOthersAreVeryUnlikelyToUse';
+	function attribute(key, value) {
+	  return {
+	    key: ATTRIBUTE_KEY,
+	    value: {
+	      attrKey: key,
+	      attrValue: value
+	    }
+	  };
+	}
+
 	function incrementalDOM(Elm) {
 	  return {
 	    node: function node(name, x, y) {
@@ -142,9 +153,8 @@
 	      });
 	      return node;
 	    },
-	    attribute: F2(function (key, value) {
-	      return { key: key, value: value };
-	    }),
+	    attribute: F2(attribute),
+	    property: F2(property),
 	    lazy: F2(_LazyJs2['default'].lazyRef),
 	    lazy2: F3(_LazyJs2['default'].lazyRef2),
 	    lazy3: F4(_LazyJs2['default'].lazyRef3),

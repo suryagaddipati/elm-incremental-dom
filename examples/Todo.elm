@@ -142,7 +142,7 @@ view address model =
           [ id "todoapp" ]
           [ taskEntry address model.field
           , taskList address model.visibility model.tasks
-          ,  controls address model.visibility model.tasks
+          , controls address model.visibility model.tasks
           ]
       , infoFooter
       ]
