@@ -1,6 +1,7 @@
 module Main where
 import Html exposing (..)
 import Html.Lazy exposing (lazy, lazy2, lazy3)
+import Html.Attributes exposing (..)
 import Time
 import Signal exposing (Signal, Address)
 import String
@@ -12,9 +13,10 @@ main =
 
 view : Address Action -> Model -> Html
 view address model =
-    node "div"
-      [ attribute "class" "todomvc-wrapper"
-      , attribute "style" "visibility:hidden" ]
+    div
+      [ class "todomvc-wrapper"
+      , style [ ("visibility", "hidden") ]
+      ]
       [ section
           [attribute "id" "todoapp" ]
           [ 

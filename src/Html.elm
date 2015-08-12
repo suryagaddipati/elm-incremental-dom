@@ -13,9 +13,6 @@ node : String -> List Property -> List Html -> Html
 node =
       VirtualDom.node
 
-attribute : String -> String -> Property
-attribute =
-      VirtualDom.attribute
 
       
 {-| Represents the content of an HTML document. There is only one `body`
