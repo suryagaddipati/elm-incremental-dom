@@ -1,5 +1,6 @@
 module Main where
 import Html exposing (..)
+import Html.Lazy exposing (lazy, lazy2, lazy3)
 import Time
 import Signal exposing (Signal, Address)
 import String
@@ -14,7 +15,10 @@ view address model =
     node "div"
       [ attribute "class" "todomvc-wrapper"
       , attribute "style" "visibility:hidden" ]
-      [ 
+      [ section
+          [attribute "id" "todoapp" ]
+          [ 
+          ]
       ]
 
 -- manage the model of our application over time

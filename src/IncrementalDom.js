@@ -5,6 +5,7 @@ var IncrementalDOM = require('incremental-dom'),
   elementVoid = IncrementalDOM.elementVoid,
   text = IncrementalDOM.text;
 var patch = require('incremental-dom').patch;
+import Lazy from './Lazy.js'
 
 function ElmNativeModule(Elm,name, values) {
   Elm.Native[name] = {};
@@ -59,7 +60,11 @@ function incrementalDOM(Elm){
     },
     attribute: F2(function(key,value){
       return {key,value};
-    })
+    }),
+    lazy: F2(Lazy.lazyRef),
+    lazy2: F3(Lazy.lazyRef2),
+    lazy3: F4(Lazy.lazyRef3),
+
   }
 }
 
