@@ -140,9 +140,9 @@ view address model =
       ]
       [ section
           [ id "todoapp" ]
-          [ taskEntry address model.field
-          , taskList address model.visibility model.tasks
-          ,  controls address model.visibility model.tasks
+          [ lazy2 taskEntry address model.field
+          , lazy3 taskList address model.visibility model.tasks
+          , lazy3 controls address model.visibility model.tasks
           ]
       , infoFooter
       ]
@@ -169,7 +169,7 @@ taskEntry address task =
           [ id "new-todo"
           , placeholder "What needs to be done?"
           , autofocus True
-          , value ""
+          , value task
           , name "newTodo"
           , on "input" targetValue (Signal.message address << UpdateField)
           , onEnter address Add
@@ -251,9 +251,11 @@ controls address visibility tasks =
     let tasksCompleted = List.length (List.filter .completed tasks)
         tasksLeft = List.length tasks - tasksCompleted
         item_ = if tasksLeft == 1 then " item" else " items"
-        footerAttributes = if List.isEmpty tasks then [ id "footer",hidden True] else [id "footer"]
     in
-    footer footerAttributes
+    footer
+      [ id "footer"
+      , hidden (List.isEmpty tasks)
+      ]
       [ span
           [ id "todo-count" ]
           [ strong [] [ text (toString tasksLeft) ]
@@ -289,8 +291,8 @@ infoFooter =
     footer [ id "info" ]
       [ p [] [ text "Double-click to edit a todo" ]
       , p []
-          [ text "Written by (Based on Evan Czaplicki's todomvc ) "
-          , a [ href "https://github.com/suryagaddipati" ] [ text "Surya Gaddipati" ]
+          [ text "Written by "
+          , a [ href "https://github.com/evancz" ] [ text "Evan Czaplicki" ]
           ]
       , p []
           [ text "Part of "

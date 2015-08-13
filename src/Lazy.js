@@ -35,52 +35,12 @@ function Thunk(fn, args, thunk)
 }
 
 Thunk.prototype.type = "Thunk";
-Thunk.prototype.update = updateThunk;
 Thunk.prototype.render = renderThunk;
 
-function shouldUpdate(current, previous)
-{
-  if (current.fn !== previous.fn)
-    {
-      return true;
-    }
-
-    // if it's the same function, we know the number of args must match
-    var cargs = current.args;
-    var pargs = previous.args;
-
-    for (var i = cargs.length; i--; )
-    {
-      if (cargs[i] !== pargs[i])
-        {
-          return true;
-        }
-    }
-
-    return false;
-}
-
-function updateThunk(previous, domNode)
-{
-  if (!shouldUpdate(this, previous))
-    {
-      this.vnode = previous.vnode;
-      return;
-    }
-
-    if (!this.vnode)
-      {
-        this.vnode = this.thunk();
-      }
-
-      var patches = diff(previous.vnode, this.vnode);
-      patch(domNode, patches);
-}
 
 function renderThunk()
 {
-  debugger
-  return this.thunk();
+  return this.thunk()();
 }
 export default {
   lazyRef, lazyRef2, lazyRef3
