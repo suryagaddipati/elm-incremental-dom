@@ -48,16 +48,16 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _LazyJs = __webpack_require__(12);
+	var _LazyJs = __webpack_require__(1);
 
 	var _LazyJs2 = _interopRequireDefault(_LazyJs);
 
-	var IncrementalDOM = __webpack_require__(1),
+	var IncrementalDOM = __webpack_require__(2),
 	    elementOpen = IncrementalDOM.elementOpen,
 	    elementClose = IncrementalDOM.elementClose,
 	    elementVoid = IncrementalDOM.elementVoid,
 	    _text = IncrementalDOM.text;
-	var patch = __webpack_require__(1).patch;
+	var patch = __webpack_require__(2).patch;
 
 	function ElmNativeModule(Elm, name, values) {
 	  Elm.Native[name] = {};
@@ -74,8 +74,15 @@
 	  var List = Elm.Native.List.make(Elm);
 	  var properties = [name, null, null];
 	  List.toArray(propertyList).forEach(function (x) {
-	    properties.push(x.key);
-	    properties.push(x.value);
+	    if (typeof x.value !== "boolean") {
+	      properties.push(x.key);
+	      properties.push(x.value);
+	    } else {
+	      if (x.value) {
+	        properties.push(x.key);
+	        properties.push(x.value);
+	      }
+	    }
 	  });
 	  return function () {
 	    elementOpen.apply(_this, properties);
@@ -89,11 +96,20 @@
 	    elementClose(name);
 	  };
 	}
-
-	function property(key, value) {
+	function attribute(key, value) {
 	  return {
 	    key: key,
 	    value: value
+	  };
+	}
+
+	function property(key, value) {
+	  // if( typeof value === "boolean"){
+	  //   type =
+	  // }
+	  return {
+	    key: key,
+	    value: typeof value === "boolean" ? value : new Object(value)
 	  };
 	}
 
@@ -158,6 +174,55 @@
 
 /***/ },
 /* 1 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function lazyRef(fn, a) {
+	  function thunk() {
+	    return fn(a);
+	  }
+	  return new Thunk(fn, [a], thunk);
+	}
+
+	function lazyRef2(fn, a, b) {
+	  function thunk() {
+	    return A2(fn, a, b);
+	  }
+	  return new Thunk(fn, [a, b], thunk);
+	}
+
+	function lazyRef3(fn, a, b, c) {
+	  function thunk() {
+	    return A3(fn, a, b, c);
+	  }
+	  return new Thunk(fn, [a, b, c], thunk);
+	}
+
+	function Thunk(fn, args, thunk) {
+	  this.fn = fn;
+	  this.args = args;
+	  this.vnode = null;
+	  this.key = undefined;
+	  this.thunk = thunk;
+	}
+
+	Thunk.prototype.type = "Thunk";
+	Thunk.prototype.render = renderThunk;
+
+	function renderThunk() {
+	  return this.thunk()();
+	}
+	exports["default"] = {
+	  lazyRef: lazyRef, lazyRef2: lazyRef2, lazyRef3: lazyRef3
+	};
+	module.exports = exports["default"];
+
+/***/ },
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -177,8 +242,8 @@
 	 * limitations under the License.
 	 */
 
-	var patch = __webpack_require__(2).patch;
-	var elements = __webpack_require__(7);
+	var patch = __webpack_require__(3).patch;
+	var elements = __webpack_require__(8);
 
 	module.exports = {
 	  patch: patch,
@@ -194,7 +259,7 @@
 
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -213,11 +278,11 @@
 	 * limitations under the License.
 	 */
 
-	var traversal = __webpack_require__(3),
+	var traversal = __webpack_require__(4),
 	    firstChild = traversal.firstChild,
 	    parentNode = traversal.parentNode;
-	var TreeWalker = __webpack_require__(6);
-	var walker = __webpack_require__(4),
+	var TreeWalker = __webpack_require__(7);
+	var walker = __webpack_require__(5),
 	    getWalker = walker.getWalker,
 	    setWalker = walker.setWalker;
 
@@ -249,7 +314,7 @@
 
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -268,8 +333,8 @@
 	 * limitations under the License.
 	 */
 
-	var getWalker = __webpack_require__(4).getWalker;
-	var getData = __webpack_require__(5).getData;
+	var getWalker = __webpack_require__(5).getWalker;
+	var getData = __webpack_require__(6).getData;
 
 
 	/**
@@ -356,7 +421,7 @@
 
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports) {
 
 	/**
@@ -407,7 +472,7 @@
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 	/**
@@ -534,7 +599,7 @@
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	/**
@@ -616,7 +681,7 @@
 
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -635,11 +700,11 @@
 	 * limitations under the License.
 	 */
 
-	var alignWithDOM = __webpack_require__(9).alignWithDOM;
-	var updateAttribute = __webpack_require__(11).updateAttribute;
-	var getData = __webpack_require__(5).getData;
-	var getWalker = __webpack_require__(4).getWalker;
-	var traversal = __webpack_require__(3),
+	var alignWithDOM = __webpack_require__(10).alignWithDOM;
+	var updateAttribute = __webpack_require__(12).updateAttribute;
+	var getData = __webpack_require__(6).getData;
+	var getWalker = __webpack_require__(5).getWalker;
+	var traversal = __webpack_require__(4),
 	    firstChild = traversal.firstChild,
 	    nextSibling = traversal.nextSibling,
 	    parentNode = traversal.parentNode;
@@ -947,10 +1012,10 @@
 	};
 
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -1046,7 +1111,7 @@
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1065,14 +1130,14 @@
 	 * limitations under the License.
 	 */
 
-	var nodes = __webpack_require__(10),
+	var nodes = __webpack_require__(11),
 	    createNode = nodes.createNode,
 	    getKey = nodes.getKey,
 	    getNodeName = nodes.getNodeName,
 	    getChild = nodes.getChild,
 	    registerChild = nodes.registerChild;
-	var markVisited = __webpack_require__(3).markVisited;
-	var getWalker = __webpack_require__(4).getWalker;
+	var markVisited = __webpack_require__(4).markVisited;
+	var getWalker = __webpack_require__(5).getWalker;
 
 
 	/**
@@ -1140,7 +1205,7 @@
 
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1159,8 +1224,8 @@
 	 * limitations under the License.
 	 */
 
-	var updateAttribute = __webpack_require__(11).updateAttribute;
-	var nodeData = __webpack_require__(5),
+	var updateAttribute = __webpack_require__(12).updateAttribute;
+	var nodeData = __webpack_require__(6),
 	    getData = nodeData.getData,
 	    initData = nodeData.initData;
 
@@ -1321,7 +1386,7 @@
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1340,7 +1405,7 @@
 	 * limitations under the License.
 	 */
 
-	var getData = __webpack_require__(5).getData;
+	var getData = __webpack_require__(6).getData;
 
 
 	/**
@@ -1430,55 +1495,6 @@
 	};
 
 
-
-/***/ },
-/* 12 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	function lazyRef(fn, a) {
-	  function thunk() {
-	    return fn(a);
-	  }
-	  return new Thunk(fn, [a], thunk);
-	}
-
-	function lazyRef2(fn, a, b) {
-	  function thunk() {
-	    return A2(fn, a, b);
-	  }
-	  return new Thunk(fn, [a, b], thunk);
-	}
-
-	function lazyRef3(fn, a, b, c) {
-	  function thunk() {
-	    return A3(fn, a, b, c);
-	  }
-	  return new Thunk(fn, [a, b, c], thunk);
-	}
-
-	function Thunk(fn, args, thunk) {
-	  this.fn = fn;
-	  this.args = args;
-	  this.vnode = null;
-	  this.key = undefined;
-	  this.thunk = thunk;
-	}
-
-	Thunk.prototype.type = "Thunk";
-	Thunk.prototype.render = renderThunk;
-
-	function renderThunk() {
-	  return this.thunk()();
-	}
-	exports["default"] = {
-	  lazyRef: lazyRef, lazyRef2: lazyRef2, lazyRef3: lazyRef3
-	};
-	module.exports = exports["default"];
 
 /***/ }
 /******/ ]);

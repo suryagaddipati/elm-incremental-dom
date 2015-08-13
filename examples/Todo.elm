@@ -253,8 +253,10 @@ controls address visibility tasks =
         item_ = if tasksLeft == 1 then " item" else " items"
     in
     footer
-      [ id "footer"
-      , hidden (List.isEmpty tasks)
+      [
+       hidden (List.isEmpty tasks)
+       , id "footer"
+       , class (toString (List.isEmpty tasks))
       ]
       [ span
           [ id "todo-count" ]

@@ -20,8 +20,15 @@ function makeNode(name,propertyList,contents){
   var List = Elm.Native.List.make(Elm);
   var properties = [name,null,null];
   List.toArray(propertyList).forEach(x => {
-    properties.push(x.key)
-    properties.push(x.value)
+    if( typeof x.value !== "boolean"){
+      properties.push(x.key)
+      properties.push(x.value)
+    }else{
+      if(x.value){
+        properties.push(x.key)
+        properties.push(x.value)
+      }
+    }
   })
   return () =>{
     elementOpen.apply(this,properties);
@@ -35,12 +42,22 @@ function makeNode(name,propertyList,contents){
     elementClose(name);
   };
 }
-
-function property(key, value)
+function attribute(key, value)
 {
   return {
     key: key,
     value: value
+  };
+}
+
+function property(key, value)
+{
+  // if( typeof value === "boolean"){
+  //   type =
+  // }
+  return {
+    key: key,
+    value: typeof value === "boolean" ? value: new Object(value)
   };
 }
 

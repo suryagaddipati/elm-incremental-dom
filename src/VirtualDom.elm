@@ -2,7 +2,7 @@ module VirtualDom
     ( Node
     , text, node
     , toElement, fromElement
-    , Property, property
+    , Property, property, attribute
     , on, onWithOptions, Options, defaultOptions
     , lazy, lazy2, lazy3
     ) where
@@ -123,6 +123,21 @@ property =
     Native.VirtualDom.property
 
 
+{-| Create arbitrary HTML *attributes*. Maps onto JavaScript’s `setAttribute`
+function under the hood.
+
+    greeting : Html
+    greeting =
+        node "div" [ attribute "class" "greeting" ] [
+          text "Hello!"
+        ]
+
+Notice that you must give the *attribute* name, so we use `class` as it would
+be in HTML, not `className` as it would appear in JS.
+-}
+attribute : String -> String -> Property
+attribute =
+    Native.VirtualDom.attribute
 
 
 -- EVENTS
