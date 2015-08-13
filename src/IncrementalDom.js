@@ -18,13 +18,13 @@ function ElmNativeModule(Elm,name, values) {
 }
 function makeNode(name,propertyList,contents){
   var List = Elm.Native.List.make(Elm);
-  var properties = [];
+  var properties = [name,null,null];
   List.toArray(propertyList).forEach(x => {
     properties.push(x.key)
     properties.push(x.value)
   })
   return () =>{
-    elementOpen(name,null,null, ...properties);
+    elementOpen.apply(this,properties);
     List.toArray(contents).forEach( x => {
       if(x.type === "Thunk"){
         x.render();

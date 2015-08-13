@@ -69,14 +69,16 @@
 	  };
 	}
 	function makeNode(name, propertyList, contents) {
+	  var _this = this;
+
 	  var List = Elm.Native.List.make(Elm);
-	  var properties = [];
+	  var properties = [name, null, null];
 	  List.toArray(propertyList).forEach(function (x) {
 	    properties.push(x.key);
 	    properties.push(x.value);
 	  });
 	  return function () {
-	    elementOpen.apply(undefined, [name, null, null].concat(properties));
+	    elementOpen.apply(_this, properties);
 	    List.toArray(contents).forEach(function (x) {
 	      if (x.type === "Thunk") {
 	        x.render();

@@ -169,7 +169,7 @@ taskEntry address task =
           [ id "new-todo"
           , placeholder "What needs to be done?"
           , autofocus True
-          , value task
+          , value ""
           , name "newTodo"
           , on "input" targetValue (Signal.message address << UpdateField)
           , onEnter address Add
@@ -251,7 +251,7 @@ controls address visibility tasks =
     let tasksCompleted = List.length (List.filter .completed tasks)
         tasksLeft = List.length tasks - tasksCompleted
         item_ = if tasksLeft == 1 then " item" else " items"
-        footerAttributes = if List.isEmpty tasks then [id "footer",hidden True] else [id "footer"]
+        footerAttributes = if List.isEmpty tasks then [ id "footer",hidden True] else [id "footer"]
     in
     footer footerAttributes
       [ span
@@ -289,8 +289,8 @@ infoFooter =
     footer [ id "info" ]
       [ p [] [ text "Double-click to edit a todo" ]
       , p []
-          [ text "Written by "
-          , a [ href "https://github.com/evancz" ] [ text "Evan Czaplicki" ]
+          [ text "Written by (Based on Evan Czaplicki's todomvc ) "
+          , a [ href "https://github.com/suryagaddipati" ] [ text "Surya Gaddipati" ]
           ]
       , p []
           [ text "Part of "
